@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appone-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appone
+  template:
+    metadata:
+      labels:
+        app: appone
+    spec:
+      # volumes:
+      #   name: app-one-volume
+      #   hostPath:
+      #     path: /mnt/data
+
+      containers:
+        - name: appone
+          image: sunilsalat/appone
+          imagePullPolicy: Never
+          # volumeMounts:
+          #   - name: volume
+          #     mountPath: "/var/data"
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: db-host
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appone-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: appone
+  ports:
+    - name: appone
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

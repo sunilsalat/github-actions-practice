@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /appone
+            pathType: Prefix
+            backend:
+              service:
+                name: appone-srv
+                port:
+                  number: 8000
+          - path: /apptwo
+            pathType: Prefix
+            backend:
+              service:
+                name: apptwo-srv
+                port:
+                  number: 9000
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
+          # - path: /?(.*)
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: nginx-errors
+          #       port:
+          #         number: 80

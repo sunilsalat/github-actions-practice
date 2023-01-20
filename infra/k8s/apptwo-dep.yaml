@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apptwo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apptwo
+  template:
+    metadata:
+      labels:
+        app: apptwo
+    spec:
+      containers:
+        - name: apptwo
+          image: sunilsalat/apptwo
+          imagePullPolicy: Never
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: db-host
+
+  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apptwo-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: apptwo
+  ports:
+    - name: apptwo
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
