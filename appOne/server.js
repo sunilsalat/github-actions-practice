@@ -25,7 +25,6 @@ app.post("/hione", async (req, res) => {
   res.status(200).json({ msg: "userCreated", len: users.length });
 });
 
-console.log(process.env.MONGO_URI, 'is mongo uri>>>')
 
 mongoose
   .connect(process.env.MONGO_URI)
