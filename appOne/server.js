@@ -18,13 +18,14 @@ app.get("/appone", async (req, res) => {
 //   .then((e) => console.log(e.data))
 //   .catch((e) => console.log(e.message));
 
+console.log("new change");
+
 app.post("/hione", async (req, res) => {
   const user = await User.create({ name: "one", email: "one@gmail.com" });
   const users = await User.find();
 
   res.status(200).json({ msg: "userCreated", len: users.length });
 });
-
 
 mongoose
   .connect(process.env.MONGO_URI)
